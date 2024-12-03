@@ -1,0 +1,33 @@
+// Defines the version of Protocol Buffers we are using
+syntax = "proto3";
+
+// Used to reference our methods in both `client.js` and `server.js`
+package todoPackage;
+
+// Use `service` to defined 'endpoints' in our gRPC server that receive/send `Message` types
+service Todo {
+    
+    // Endpoint that receives a `TodoItem` and sends a `TodoItem`
+    rpc createTodo(TodoItem) returns (TodoItem);
+
+    // Endpoint receives nothing so `voidNoParam` as a placeholder and sends an array of `TodoItem`
+    rpc readTodos(voidNoParam) returns (TodoItems);
+
+    // Endpoint receives nothing and sends out a stream of `TodoItem`
+    rpc readTodosStream(voidNoParam) returns (stream TodoItem);
+}
+
+// No `void` type in Protocol Buffers so this is a placeholder
+message voidNoParam{}
+
+// Data structure to represent a `TodoItem`
+message TodoItem {
+    int32 id = 1;
+    string text = 2;
+}
+
+// Array of TodoItems
+message TodoItems {
+    // `repeated` indicates it is an array of TodoItems
+    repeated TodoItem items = 1;
+}
